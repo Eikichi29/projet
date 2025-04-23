@@ -58,4 +58,24 @@ app.post("/create-checkout-session", async (req, res) => {
     console.error("Erreur création session", err);
     res.status(500).send("Erreur lors de la création de la session Stripe");
   }
-});
+});<><button id="checkout-button">M'abonner</button><script src="https://js.stripe.com/v3/"></script><script>
+  var stripe = Stripe('pk_live_51RH3ljRtO1bGwiPvL1c2jNVNYjikezB1GNxs63FhAE5pTgW6Lg84uJVYZcM6hjIaVsLioeIakCMPlCO9KD1Nx7Bd003PYKYykC'); //
+  checkoutButton.addEventListener('click', function () {fetch('/create-checkout-session', {
+    method: 'POST',
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (sessionId) {
+      return stripe.redirectToCheckout({ sessionId: sessionId });
+    })
+    .then(function (result) {
+      if (result.error) {
+        alert(result.error.message);
+      }
+    })
+    .catch(function (error) {
+      console.error('Erreur:', error);
+    })};
+  });
+</script></>
