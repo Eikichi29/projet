@@ -31,3 +31,31 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
     console.log(`Serveur en ligne sur le port ${PORT}`);
 });
+app.post("/create-checkout-session", async (req, res) => {
+  const YOUR_DOMAIN = "https://projet-iwgz.onrender.com"; // Change cela avec ton URL
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: "Produit Exemple",  // Change le produit ici
+            },
+            unit_amount: 2000, // Montant en cents (ex. 20.00 USD)
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${YOUR_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${YOUR_DOMAIN}/cancel`,
+    });
+
+    res.redirect(303, session.url);
+  } catch (err) {
+    console.error("Erreur création session", err);
+    res.status(500).send("Erreur lors de la création de la session Stripe");
+  }
+});
