@@ -24,12 +24,10 @@ app.post('/paiement', async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
-
 const PORT = process.env.PORT || 3000;
 app.get("/", (req, res) => {
   res.send("Backend actif 🚀");
-});
-
+    });
 app.listen(PORT, () => {
     console.log(`Serveur en ligne sur le port ${PORT}`);
 });
