@@ -101,3 +101,9 @@ app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
 
   res.status(200).send("Event received");
 });
+line_items: [
+  {
+    price: 'price_20', // Remplace par ton ID de prix réel
+    quantity: 1,
+  },
+],
