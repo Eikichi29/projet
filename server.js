@@ -79,3 +79,25 @@ app.post("/create-checkout-session", async (req, res) => {
     })};
   });
 </script></>
+app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
+  const sig = req.headers["stripe-signature"];
+  const endpointSecret = "whsec_5UUdkh73ilUUlb1UoIgdFtDdQXd2FEqs";
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+  } catch (err) {
+    console.error("Erreur Webhook : ", err);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Gérer l'événement checkout.session.completed
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object;
+    console.log("Payment successful for session:", session.id);
+    // Tu peux ici marquer ton utilisateur comme abonné
+  }
+
+  res.status(200).send("Event received");
+});
